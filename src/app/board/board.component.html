@@ -1,0 +1,44 @@
+
+<p>Dificultad: {{difficulty}}</p>
+
+<p>Numero de minas: {{numberOfMines}}</p>
+
+<div class="reinicio">
+    <button (click)="reiniciar()" *ngIf="gameState == 0 || gameState == 2">
+        Reintentar
+    </button>
+</div>
+
+<div *ngIf="gameState == 1 || gameState == 0">
+    <table class="Game">
+        <tr *ngFor="let rows of board; let y = index;">
+            <td *ngFor="let cell of rows; let x = index;" 
+            (click)="gameState == 1 && checkCell(y, x)" 
+            (contextmenu)="gameState == 1" 
+            [ngClass]="{'closedCell': cell.status != 'open' && !(gameState == 0 && cell.mina) }"
+            >
+                <div *ngIf="cell.status =='toOpen'">
+                    0
+                </div>
+                <div *ngIf="cell.status =='open' && cell.minasAlrededor != 0" class="celdas">
+                    {{cell.minasAlrededor}}
+                </div>
+                <div *ngIf="cell.status == 'mine'" class="mina">
+                    💣
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="Victoria">
+    <h3 *ngIf="gameState == 2" >
+        Ganaste. Juego Terminado
+    </h3>
+</div>
+
+<div class="Derrota">
+    <h3 *ngIf="gameState == 0" >
+        Perdiste. Juego Terminado
+    </h3>
+</div>
